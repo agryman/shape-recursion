@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="shape-recursion" default="type-check" basedir=".">
+
+	<!-- jena.lib.dir is the directory that stores all the Jena jar files. -->
+	<property name="jena.lib.dir" location="/Users/arthurryman/apache-jena-2.10.1/lib" />
+
+	<!-- jena.classpath is the CLASSPATH for Jena commands. -->
+	<path id="jena.classpath">
+		<fileset dir="${jena.lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<!-- fuzz is the path to the executable file of the fuzz type-checker for Z -->
+	<property name="fuzz" location="/Users/arthurryman/fuzz/fuzz-3.4.1/src/fuzz" />
+
+	<macrodef name="fuzz">
+		<attribute name="specification" />
+		<attribute name="imports" default="" />
+		<sequential>
+			<concat force="yes" destfile="@{specification}.prelude">
+				<filelist dir="." files="fuzzlib common.tex @{imports}" />
+			</concat>
+			<exec executable="${fuzz}" output="@{specification}.fuzz">
+				<arg line="-dl -p @{specification}.prelude @{specification}" />
+			</exec>
+		</sequential>
+	</macrodef>
+
+	<target name="type-check" description="Type-checks shape-recursion.tex">
+		<fuzz specification="shape-recursion" />
+	</target>
+
+	<!-- = = = = = = = = = = = = = = = = =
+         macrodef: ttl2xml - convert RDF Turtle to non-abbreviated RDF/XML
+         = = = = = = = = = = = = = = = = = -->
+	<macrodef name="ttl2xml">
+		<attribute name="model" />
+		<sequential>
+			<java classpathref="jena.classpath" classname="jena.rdfcopy" fork="true" maxmemory="1024m" output="@{model}.rdf">
+				<arg value="@{model}.ttl" />
+				<arg value="TURTLE" />
+				<arg value="RDF/XML" />
+			</java>
+		</sequential>
+	</macrodef>
+
+	<target name="validate" description="Validates all example RDF Turtle source files.">
+		<ttl2xml model="alice-contact" />
+		<ttl2xml model="bob-contact" />
+		<ttl2xml model="contact-shape" />
+		<ttl2xml model="associate-shape" />
+		<ttl2xml model="polentoni-shape" />
+		<ttl2xml model="polentoni-data" />
+		<ttl2xml model="polentoni-data-test" />
+	</target>
+
+	<target name="pim-shapes-graph" depends="validate" description="Catenates all PIM shapes into a single shapes graph file.">
+			<java classpathref="jena.classpath" classname="jena.rdfcat" fork="true" maxmemory="1024m" output="pim-shapes-graph.ttl">
+				<arg value="-out" />
+				<arg value="N3" />
+				<arg value="-n" />
+				<arg value="contact-shape.ttl" />
+				<arg value="associate-shape.ttl" />
+			</java>
+	</target>
+
+	<target name="query-pim-neighbour-arcs" depends="pim-shapes-graph" description="Extracts neighbour graph arcs from the PIM shapes graph.">
+			<java classpathref="jena.classpath" classname="arq.sparql" fork="true" maxmemory="1024m" output="pim-neighbour-arcs.txt">
+				<arg value="-query" />
+				<arg value="neighbour-arcs.rq" />
+				<arg value="-data" />
+				<arg value="pim-shapes-graph.ttl" />
+			</java>
+	</target>
+
+	<target name="query-polentoni-data" depends="validate" description="Finds all non-Polentoni people in the polentoni-data graph.">
+			<java classpathref="jena.classpath" classname="arq.sparql" fork="true" maxmemory="1024m" output="polentoni-data.txt">
+				<arg value="-query" />
+				<arg value="polentoni.rq" />
+				<arg value="-data" />
+				<arg value="polentoni-data.ttl" />
+			</java>
+	</target>
+
+	<target name="query-polentoni-data-test" depends="validate" description="Finds all non-Polentoni people in the polentoni-data-test graph.">
+			<java classpathref="jena.classpath" classname="arq.sparql" fork="true" maxmemory="1024m" output="polentoni-data-test.txt">
+				<arg value="-query" />
+				<arg value="polentoni.rq" />
+				<arg value="-data" />
+				<arg value="polentoni-data-test.ttl" />
+			</java>
+	</target>
+
+	<target name="clean" description="Removes all generated files.">
+		<delete file="shape-recursion.fuzz" />
+		<delete file="shape-recursion.prelude" />
+		<delete file="alice-contact.rdf" />
+		<delete file="bob-contact.rdf" />
+		<delete file="contact-shape.rdf" />
+		<delete file="associate-shape.rdf" />
+		<delete file="polentoni-shape.rdf" />
+		<delete file="polentoni-data.txt" />
+		<delete file="polentoni-data.rdf" />
+		<delete file="polentoni-data-test.rdf" />
+		<delete file="polentoni-data-test.txt" />
+		<delete file="pim-shapes-graph.ttl" />
+		<delete file="pim-neighbour-arcs.txt" />
+	</target>
+
+</project>

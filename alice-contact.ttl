@@ -1,0 +1,15 @@
+# http://example.org/contacts/alice
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@base <http://example.org/contacts/> .
+
+<alice#me> a foaf:Person ;
+	foaf:name "Alice" ;
+	foaf:knows
+		<bob#me> ,
+		<charlie#me> .
+
+<bob#me> a foaf:Person ;
+	foaf:name "Bob" .
+
+<charlie#me> a foaf:Person ;
+	foaf:name "Charlie" .

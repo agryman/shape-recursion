@@ -1,0 +1,24 @@
+# http://example.org/shapes/contact
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix oslc: <http://open-services.net/ns/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@base <http://example.org/shapes/> .
+
+<contact> a oslc:ResourceShape ;
+	oslc:describes foaf:Person ;
+	oslc:property 
+		<contact#name> , 
+		<contact#knows> .
+
+<contact#name> a oslc:Property ;
+	oslc:name "name" ;
+	oslc:occurs oslc:Exactly-one ;
+	oslc:propertyDefinition foaf:name ;
+	oslc:valueType xsd:string .
+
+<contact#knows> a oslc:Property ;
+	oslc:name "knows" ;
+	oslc:occurs oslc:Zero-or-many ;
+	oslc:propertyDefinition foaf:knows ;
+	oslc:range foaf:Person ;
+	oslc:valueShape <associate> .

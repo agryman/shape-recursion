@@ -1,0 +1,21 @@
+# http://example.org/shapes/polentoni
+@prefix ex: <http://example.org/polentoni#> .
+@prefix oslc: <http://open-services.net/ns/core#> .
+@base <http://example.org/shapes/> .
+
+<polentoni> a oslc:ResourceShape ;
+	oslc:property 
+		<polentoni#livesIn> , 
+		<polentoni#knows> .
+
+<polentoni#livesIn> a oslc:Property ;
+	oslc:name "livesIn" ;
+	oslc:occurs oslc:Exactly-one ;
+	oslc:propertyDefinition ex:livesIn ;
+	oslc:allowedValue ex:NorthernItaly .
+
+<polentoni#knows> a oslc:Property ;
+	oslc:name "knows" ;
+	oslc:occurs oslc:Zero-or-many ;
+	oslc:propertyDefinition ex:knows ;
+	oslc:valueShape <polentoni> .

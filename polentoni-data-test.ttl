@@ -1,0 +1,21 @@
+@prefix ex: <http://example.org/polentoni#> .
+
+ex:Enrico ex:livesIn ex:NorthernItaly .
+ex:Diego ex:livesIn  ex:NorthernItaly .
+ex:Alessandro ex:livesIn ex:NorthernItaly .
+ex:Sergio ex:livesIn ex:NorthernItaly .
+ex:John ex:livesIn ex:NorthernItaly .
+ex:Maurizio ex:livesIn ex:SouthernItaly .
+
+ex:Enrico ex:knows ex:John .
+ex:John ex:knows ex:Maurizio .
+ex:Diego ex:knows ex:Alessandro .
+ex:Alessandro ex:knows ex:Diego .
+ex:Alessandro ex:knows ex:Sergio .
+
+ex:Alice ex:knows ex:Bob.
+ex:Charlie ex:knows ex:Dick .
+
+ex:Alice ex:livesIn ex:NorthernItaly .
+ex:Charlie ex:livesIn ex:NorthernItaly .
+ex:Dick ex:livesIn ex:NorthernItaly , ex:SouthernItaly .

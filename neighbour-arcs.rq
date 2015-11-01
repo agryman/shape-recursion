@@ -1,0 +1,13 @@
+prefix oslc: <http://open-services.net/ns/core#>
+
+select distinct ?a ?direction ?p ?b
+where {
+	?a a oslc:ResourceShape ;
+		oslc:property ?prop .
+	?prop a oslc:Property ;
+		oslc:propertyDefinition ?p ;
+		oslc:valueShape ?b .
+	optional {?prop oslc:isInverseProperty ?inverse}
+	bind (if(bound(?inverse) && ?inverse, 
+		'backward', 'forward') as ?direction)
+}

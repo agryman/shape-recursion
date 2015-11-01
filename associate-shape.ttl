@@ -1,0 +1,25 @@
+# http://example.org/shapes/associate
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix oslc: <http://open-services.net/ns/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@base <http://example.org/shapes/> .
+
+<associate> a oslc:ResourceShape ;
+	oslc:describes foaf:Person ;
+	oslc:property 
+		<associate#name> , 
+		<associate#isKnownBy> .
+
+<associate#name> a oslc:Property ;
+	oslc:name "name" ;
+	oslc:occurs oslc:Exactly-one ;
+	oslc:propertyDefinition foaf:name ;
+	oslc:valueType xsd:string .
+
+<associate#isKnownBy> a oslc:Property ;
+	oslc:name "isKnownBy" ;
+	oslc:occurs oslc:Exactly-one ;
+	oslc:propertyDefinition foaf:knows ;
+	oslc:isInverseProperty true ;
+	oslc:range foaf:Person ;
+	oslc:valueShape <contact> .
