@@ -92,6 +92,10 @@
 			</java>
 	</target>
 
+	<target name="arxiv" description="Creates a zip file for uploading to arxiv.">
+		<zip basedir="." destfile="arxiv.zip" includesfile="arxiv-manifest.txt" />
+	</target>
+
 	<target name="clean" description="Removes all generated files.">
 		<delete file="shape-recursion.fuzz" />
 		<delete file="shape-recursion.prelude" />
@@ -106,6 +110,7 @@
 		<delete file="polentoni-data-test.txt" />
 		<delete file="pim-shapes-graph.ttl" />
 		<delete file="pim-neighbour-arcs.txt" />
+		<delete file="arxiv.zip" />
 	</target>
 
 </project>

@@ -1,0 +1,15 @@
+shape-recursion.tex
+shape-recursion.bbl
+polentoni-data.png
+alice-contact.png
+alice-contact.ttl
+bob-contact.ttl
+polentoni-data.ttl
+polentoni.rq
+contact-shape.ttl
+associate-shape.ttl
+neighbour-arcs.rq
+polentoni-shape.ttl
+fuzz.sty
+oxsz*.*
+z*.mf
